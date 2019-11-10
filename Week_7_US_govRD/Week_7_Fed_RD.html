@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<title></title>
+
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
+  }
+};
+</script>
+
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
+</style>
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
+</script>
+
+
+
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
+}
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
+}
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
+}
+
+h1 {
+   font-size:2.2em;
+}
+
+h2 {
+   font-size:1.8em;
+}
+
+h3 {
+   font-size:1.4em;
+}
+
+h4 {
+   font-size:1.0em;
+}
+
+h5 {
+   font-size:0.9em;
+}
+
+h6 {
+   font-size:0.8em;
+}
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
+}
+
+pre, img {
+  max-width: 100%;
+}
+pre {
+  overflow-x: auto;
+}
+pre code {
+   display: block; padding: 0.5em;
+}
+
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
+</style>
+
+
+
+</head>
+
+<body>
+<pre><code class="r">library(tidyverse)
+options(scipen=999)
+#Import data
+fed_rd &lt;- read_csv(&quot;fed_rd.csv&quot;)
+</code></pre>
+
+<pre><code>## Parsed with column specification:
+## cols(
+##   department = col_character(),
+##   year = col_integer(),
+##   rd_budget = col_double(),
+##   total_outlays = col_double(),
+##   discretionary_outlays = col_double(),
+##   gdp = col_double()
+## )
+</code></pre>
+
+<pre><code class="r">#Set theme using NASA font -&gt; use loadfonts
+extrafont::loadfonts(device=&quot;win&quot;)
+</code></pre>
+
+<pre><code>## AGA Arabesque already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## AGA Arabesque Desktop already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Agency FB already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Akhbar MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Algerian already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Arial Black already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Arial already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Arial Narrow already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Arial Rounded MT Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Arial Unicode MS already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Baskerville Old Face already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bauhaus 93 already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bell MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Berlin Sans FB already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Berlin Sans FB Demi already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bernard MT Condensed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Blackadder ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bodoni MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bodoni MT Black already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bodoni MT Condensed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bodoni MT Poster Compressed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bold Italic Art already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Book Antiqua already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bookman Old Style already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bookshelf Symbol 7 already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bradley Hand ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Britannic Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Broadway already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Brush Script MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Calibri already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Calibri Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Californian FB already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Calisto MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Cambria already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Candara already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Castellar already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Centaur already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Century already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Century Gothic already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Century Schoolbook already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Chiller already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Colonna MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Comic Sans MS already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Consolas already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Constantia already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Cooper Black already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Copperplate Gothic Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Copperplate Gothic Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Corbel already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Courier New already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Curlz MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## DecoType Naskh already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## DecoType Naskh Extensions already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## DecoType Naskh Special already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## DecoType Naskh Swashes already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## DecoType Naskh Variants already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## DecoType Thuluth already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Diwani Bent already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Diwani Letter already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Diwani Outline Shaded already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Diwani Simple Outline already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Diwani Simple Outline 2 already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Diwani Simple Striped already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Ebrima already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Edwardian Script ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Elephant already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Engravers MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Eras Bold ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Eras Demi ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Eras Light ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Eras Medium ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Farsi Simple Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Farsi Simple Outline already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Felix Titling already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Footlight MT Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Forte already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Franklin Gothic Book already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Franklin Gothic Demi already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Franklin Gothic Demi Cond already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Franklin Gothic Heavy already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Franklin Gothic Medium already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Franklin Gothic Medium Cond already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Freestyle Script already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## French Script MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## FZShuTi already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## FZYaoTi already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gabriola already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gadugi already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Garamond already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Georgia already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gigi already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gill Sans Ultra Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gill Sans Ultra Bold Condensed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gill Sans MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gill Sans MT Condensed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gill Sans MT Ext Condensed Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Gloucester MT Extra Condensed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Goudy Old Style already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Goudy Stout already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Haettenschweiler already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Harlow Solid Italic already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Harrington already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## High Tower Text already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Impact already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Imprint MT Shadow already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Informal Roman already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Italic Outline Art already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Javanese Text already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Jokerman already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Juice ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Kristen ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Kufi Extended Outline already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Kufi Outline Shaded already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Kunstler Script already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Wide Latin already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Led Italic Font already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Leelawadee already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Leelawadee UI already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Leelawadee UI Semilight already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## LiSu already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Lucida Bright already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Lucida Calligraphy already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Lucida Console already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Lucida Fax already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Lucida Handwriting already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Lucida Sans already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Lucida Sans Typewriter already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Lucida Sans Unicode already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Magneto already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Maiandra GD already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Malgun Gothic already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Malgun Gothic Semilight already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Marlett already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Matura MT Script Capitals already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Microsoft Himalaya already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Microsoft Yi Baiti already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Microsoft New Tai Lue already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Microsoft PhagsPa already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Microsoft Sans Serif already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Microsoft Tai Le already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Mistral already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Modern No. 20 already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Mongolian Baiti already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Monotype Corsiva already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Monotype Koufi already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## MS Outlook already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## MS Reference Sans Serif already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## MS Reference Specialty already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## MT Extra already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Mudir MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## MV Boli already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Myanmar Text already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Niagara Engraved already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Niagara Solid already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Nirmala UI already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Nirmala UI Semilight already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## OCR A Extended already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Old Antic Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Old Antic Decorative already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Old Antic Outline already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Old Antic Outline Shaded already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Old English Text MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Onyx already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Palace Script MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Palatino Linotype already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Papyrus already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Parchment already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Perpetua already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Perpetua Titling MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Playbill already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Poor Richard already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Pristina already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## PT Bold Arch already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## PT Bold Broken already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## PT Bold Dusky already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## PT Bold Heading already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## PT Bold Mirror already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## PT Bold Stars already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## PT Separated Baloon already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## PT Simple Bold Ruled already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Rage Italic already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Ravie already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Rockwell already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Rockwell Condensed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Rockwell Extra Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Script MT Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe MDL2 Assets already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe Print already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe Script already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe UI already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe UI Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe UI Semibold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe UI Semilight already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe UI Black already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe UI Historic already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe UI Symbol already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Showcard Gothic already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Simple Bold Jut Out already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Simple Indust Outline already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Simple Indust Shaded already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Simple Outline Pat already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## SimSun-ExtB already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Snap ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STCaiyun already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Stencil already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STFangsong already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STHupo already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STKaiti already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STLiti already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STSong already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STXihei already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STXingkai already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STXinwei already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## STZhongsong already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Sylfaen already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Symbol already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Tahoma already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Tempus Sans ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Times New Roman already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Trebuchet MS already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Tw Cen MT already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Tw Cen MT Condensed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Tw Cen MT Condensed Extra Bold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Verdana already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Viner Hand ITC already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Vivaldi already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Vladimir Script already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Webdings already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Wingdings already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Wingdings 2 already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Wingdings 3 already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## YouYuan already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## FontAwesome already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Bahnschrift already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Fira Code already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Fira Code Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Fira Code Medium already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Fira Code Retina already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## HoloLens MDL2 Assets already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Homemade Apple already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## IBM Plex Sans already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## IBM Plex Sans ExtraLight already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## IBM Plex Sans Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## IBM Plex Sans Medium already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## IBM Plex Sans SemiBold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## IBM Plex Sans Text already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## IBM Plex Sans Thin already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Ink Free already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## LondonBetween already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## LondonMM already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## LondonTwo already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Nasalization Rg already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Roboto Condensed already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Roboto Condensed Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Segoe UI Emoji already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Special Elite already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Titillium Web Black already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Titillium Web already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Titillium Web ExtraLight already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Titillium Web Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Titillium Web SemiBold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Yikes already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Animals already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Roboto Black already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Roboto already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Roboto Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Roboto Medium already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Roboto Thin already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Roboto Slab already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Sanchez already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Spectral already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Spectral ExtraBold already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Spectral ExtraLight already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Spectral Light already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Spectral Medium already registered with windowsFonts().
+</code></pre>
+
+<pre><code>## Spectral SemiBold already registered with windowsFonts().
+</code></pre>
+
+<pre><code class="r">my_theme &lt;- theme_bw() +
+  theme (
+    text = element_text (colour = &quot;#FDFDFD&quot;, face = &quot;bold&quot;, family = &quot;Nasalization Rg&quot;),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    plot.background = element_rect(fill = &quot;#262A33&quot;),
+    panel.background = element_rect(fill = &quot;#262A33&quot;),
+    panel.border = element_rect(size = 0),
+    axis.text.x = element_text(colour = &quot;#FDFDFD&quot;, size = 9),
+    axis.text.y = element_text(colour = &quot;#FDFDFD&quot;, size = 12),
+    plot.title = element_text(colour = &quot;#FDFDFD&quot;, size = 24)
+  )
+#Filter to just NASA and convert rd_budget to $US Billions
+nasa &lt;- fed_rd %&gt;% filter(department == &quot;NASA&quot;) %&gt;% mutate(rd_billion = rd_budget/1000000000, total = total_outlays/1000000000, percent_rd = rd_billion/total*100)
+
+#How has NASA R&amp;D spending changed over time?
+p &lt;- ggplot(nasa, aes(year, rd_billion)) + geom_line(colour = &quot;#0169F4&quot;, size = 2)  + theme_bw() +
+  labs(x = &quot;Date&quot;, y = &quot;$US billion&quot;, title = &quot;NASA R&amp;D Spending, 1976 to 2017&quot;, caption = &quot;Source: AAAS&quot;)
+p + my_theme
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-12"/></p>
+
+<pre><code class="r">p
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-12"/></p>
+
+<pre><code class="r">#Area chart
+p2 &lt;- ggplot(nasa, aes(year, rd_billion)) + geom_area(colour = &quot;black&quot;, fill = &quot;blue&quot;, alpha = 0.6)  + my_theme +
+  labs(x = &quot;Date&quot;, y = &quot;$US billion&quot;, title = &quot;NASA R&amp;D Spending, 1976 to 2017&quot;, caption = &quot;Source: AAAS&quot;)
+p2
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-12"/></p>
+
+<pre><code class="r">#Total spending
+p3 &lt;- ggplot(nasa, aes(year, total)) + geom_area(colour = &quot;black&quot;, fill = &quot;green&quot;, alpha = 0.6)  + my_theme +
+  labs(x = &quot;Date&quot;, y = &quot;$US billion&quot;, title = &quot;NASA Total spending, 1976 to 2017&quot;, caption = &quot;Source: AAAS&quot;)
+p3
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-12"/></p>
+
+<pre><code class="r">#Function to preview the image before saving
+ggpreview &lt;- function (..., device = &quot;png&quot;) {
+  fname &lt;- tempfile(fileext = paste0(&quot;.&quot;, device))
+  ggplot2::ggsave(filename = fname, device = device, ...)
+  system2(&quot;open&quot;, fname)
+  invisible(NULL)
+}
+#Preview the image
+ggpreview(p2)
+</code></pre>
+
+<pre><code>## Saving 7 x 7 in image
+</code></pre>
+
+<pre><code class="r">#Save the image
+ggsave(&quot;nasa_rd.png&quot;, width = 8, height = 6)
+
+#Knit the file but also generate a R markdown file (precious = TRUE)
+knitr::spin(&quot;Week_7_Fed_RD.R&quot;, precious = TRUE)
+</code></pre>
+
+<pre><code>## 
+## 
+## processing file: Week_7_Fed_RD.Rmd
+</code></pre>
+
+<pre><code>## 
+  |                                                                       
+  |                                                                 |   0%
+  |                                                                       
+  |......................                                           |  33%
+##   ordinary text without R code
+## 
+## 
+  |                                                                       
+  |...........................................                      |  67%
+## label: unnamed-chunk-13
+</code></pre>
+
+<pre><code>## 
+  |                                                                       
+  |.................................................................| 100%
+##   ordinary text without R code
+</code></pre>
+
+<pre><code>## output file: Week_7_Fed_RD.md
+</code></pre>
+
+<pre><code class="r">##################Check of billions####################################
+#https://stackoverflow.com/questions/28159936/formatting-large-currency-or-dollar-values-to-millions-billions
+# Format numbers with suffixes K, M, B, T and optional rounding. Vectorized
+# Main purpose: pretty formatting axes for plots produced by ggplot2
+#
+# Usage in ggplot2: scale_x_continuous(labels = suffix_formatter)
+
+suffix_formatter &lt;- function(x, digits = NULL)
+{
+  intl &lt;- c(1e3, 1e6, 1e9, 1e12);
+  suffixes &lt;- c(&#39;K&#39;, &#39;M&#39;, &#39;B&#39;, &#39;T&#39;);
+
+  i &lt;- findInterval(x, intl);
+
+  result &lt;- character(length(x));
+
+  # Note: for ggplot2 the last label element of x is NA, so we need to handle it
+  ind_format &lt;- !is.na(x) &amp; i &gt; 0;
+
+  # Format only the elements that need to be formatted 
+  # with suffixes and possible rounding
+  result[ind_format] &lt;- paste0(
+    formatC(x[ind_format]/intl[i[ind_format]], format = &quot;f&quot;, digits = digits)
+    ,suffixes[i[ind_format]]
+  );
+  # And leave the rest with no changes
+  result[!ind_format] &lt;- as.character(x[!ind_format]);
+
+  return(invisible(result));
+}
+
+p4 &lt;- ggplot(nasa, aes(year, rd_budget)) + geom_area(colour = &quot;black&quot;, fill = &quot;blue&quot;, alpha = 0.6)  + my_theme +
+  labs(x = &quot;Date&quot;, y = &quot;$US billion&quot;, title = &quot;NASA R&amp;D Spending, 1976 to 2017&quot;) + scale_y_continuous(labels = suffix_formatter())
+</code></pre>
+
+<pre><code>## Error in findInterval(x, intl): argument &quot;x&quot; is missing, with no default
+</code></pre>
+
+<pre><code class="r">p4
+</code></pre>
+
+<pre><code>## Error in eval(expr, envir, enclos): object &#39;p4&#39; not found
+</code></pre>
+
+<pre><code class="r">############################################################################
+#How to the budgets compare across departments?
+fed_rd_billion &lt;- fed_rd %&gt;%  mutate(rd_billion = rd_budget/1000000000)
+p5 &lt;- ggplot(fed_rd_billion, aes(year, rd_billion)) + geom_area(colour = &quot;black&quot;, fill = &quot;#228B22&quot;, alpha = 0.6)  + my_theme +
+  labs(x = &quot;Date&quot;, y = &quot;$US billion&quot;, title = &quot;R&amp;D Spending by US Department, 1976 to 2017&quot;) + facet_wrap(~department)
+p5
+
+p6 &lt;- ggplot(fed_rd_billion, aes(year, rd_billion)) + geom_area(colour = &quot;black&quot;, fill = &quot;#228B22&quot;, alpha = 0.6)  + my_theme +
+  labs(x = &quot;Date&quot;, y = &quot;$US billion&quot;, title = &quot;R&amp;D Spending by US Department, 1976 to 2017&quot;) + scale_x_continuous(breaks = seq(1976, 2017, by = 20))+ facet_wrap(~department, scales = &quot;free_y&quot;, nrow = 2) 
+p6
+
+#Preview the image
+ggpreview(p6, width = 10)
+</code></pre>
+
+<pre><code>## Saving 10 x 7 in image
+</code></pre>
+
+<pre><code class="r">#Save the image
+ggsave(&quot;fed_rd.png&quot;, width = 10, height = 6)
+</code></pre>
+
+</body>
+
+</html>
