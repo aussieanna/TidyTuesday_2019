@@ -1,0 +1,188 @@
+---
+title: "#TidyTuesday - Tennis grand slam champions"
+author: "Anna Reynolds"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: 
+  rmarkdown::html_document:
+    code_folding: show
+    theme: sandstone
+    code_download: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+extrafont::loadfonts(device="win")
+```
+
+## Overview
+A few exciting Tennis-related datasets this week, all of which come courtesy of Wikipedia!
+https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-04-09
+
+## Load data
+```{r loading data,warning=FALSE, message=FALSE}
+library(tidyverse)
+library(ggrepel)
+grand_slams <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-04-09/grand_slams.csv")
+```
+
+```{r bbc theme}
+#https://github.com/bbc/bbplot
+style <- function ()
+{
+    font <- "IBM Plex Sans"
+    ggplot2::theme(plot.title = ggplot2::element_text(family = font,
+        size = 28, face = "bold", color = "#222222"), plot.subtitle = ggplot2::element_text(family = font,
+        size = 22, margin = ggplot2::margin(9, 0, 9, 0)), plot.caption = ggplot2::element_blank(),
+        legend.position = "none", legend.text.align = 0, legend.background = ggplot2::element_blank(),
+        legend.title = ggplot2::element_blank(), legend.key = ggplot2::element_blank(),
+        legend.text = ggplot2::element_text(family = font, size = 18,
+            color = "#222222"), axis.title = ggplot2::element_blank(),
+        axis.text = ggplot2::element_text(family = font, size = 18,
+            color = "#222222"), axis.text.x = ggplot2::element_text(margin = ggplot2::margin(5,
+            b = 10)), axis.ticks = ggplot2::element_blank(),
+        axis.line = ggplot2::element_blank(), panel.grid.minor = ggplot2::element_blank(),
+        panel.grid.major.y = ggplot2::element_line(color = "#cbcbcb"),
+        panel.grid.major.x = ggplot2::element_blank(), panel.background = ggplot2::element_blank(),
+        strip.background = ggplot2::element_rect(fill = "white"),
+        strip.text = ggplot2::element_text(size = 22, hjust = 0))
+}
+```
+
+## Analysis/visualization
+Lets look at the cumulative number of grand slam wins over time for men and women using a step chart. Inspired by John Burns-Murdoch https://gist.github.com/johnburnmurdoch/bd20db77b2582031604ccd1bdc4be582
+Note: there are some duplicate records in the data set that need to be removed.
+
+```{r step chart women, fig.width=12, fig.height=10, warning=FALSE}
+women_gs <-
+  grand_slams %>% filter(gender == "Female") %>% group_by(name) %>% distinct(year, tournament_date, .keep_all = TRUE) %>% mutate(rolling_win_count2 = row_number()) %>%  mutate(total_wins = if_else(year != max(year), NA_integer_, max(rolling_win_count2))) %>%  mutate(label = if_else(year == max(year), as.character(name), NA_character_))
+
+  women <- ggplot(women_gs,
+  aes(year, rolling_win_count2, label = name, colour = total_wins)) +
+  geom_step(data = women_gs,
+  mapping = aes(x = year, y = rolling_win_count2, group = name)) +
+  geom_text_repel(
+  aes(label = label),
+  data          = subset(women_gs, rolling_win_count2 > 10),
+  nudge_x = 1, nudge_y = 1,
+  na.rm = TRUE
+  ) + labs(
+  x = "Year",
+  y = "Number of wins",
+  title = "Tennis grand slam wins, women, 1968\u20132019",
+  subtitle = "Serena Williams has the most with 23 wins"
+  ) + style() + geom_point(aes(x=year, y=total_wins))
+women
+```
+
+```{r step chart men, fig.width=12, fig.height=10, warning=FALSE}
+men_gs <-
+  grand_slams %>% filter(gender == "Male") %>% group_by(name) %>% distinct(year, tournament_date, .keep_all = TRUE) %>% mutate(rolling_win_count2 = row_number()) %>%  mutate(total_wins = if_else(year != max(year), NA_integer_, max(rolling_win_count2))) %>%  mutate(label = if_else(year == max(year), as.character(name), NA_character_))
+
+  men <- ggplot(men_gs,
+  aes(year, rolling_win_count2, label = name, colour = total_wins)) + 
+  geom_step(data = men_gs,
+  mapping = aes(x = year, y = rolling_win_count2, group = name)) +
+  geom_text_repel(
+  aes(label = label),
+  data  = subset(men_gs, rolling_win_count2 > 10),
+  nudge_x = 1, nudge_y = 1,
+  na.rm = TRUE
+  ) + labs(
+  x = "Year",
+  y = "Number of wins",
+  title = "Tennis grand slam wins, men, 1968\u20132019",
+  subtitle = "Roger Federer has the most with 20 wins"
+  ) + style() + geom_point(aes(x = year, y = total_wins))
+men
+```
+
+```{r serena vs roger, fig.width=12, fig.height=8, warning=FALSE}
+sr <-
+  grand_slams %>% filter(name == "Serena Williams" | name == "Roger Federer") %>% group_by(name) %>% mutate(label = if_else(year == max(year), as.character(name), NA_character_))
+
+plot <- ggplot(sr,
+  aes(year, rolling_win_count, label = name, colour = name)) + 
+  geom_step(data = sr,
+  mapping = aes(x = year, y = rolling_win_count, group = name), size=2) +
+  geom_text_repel(
+  aes(label = label),
+  nudge_x = 1, nudge_y = 1,
+  na.rm = TRUE
+  ) + labs(
+  x = "Year",
+  y = "Number of wins",
+  title = "Tennis grand slam wins, Serena vs Roger, 1999\u20132019",
+  subtitle = "Serena Williams has the most with 23 wins"
+  ) + style() 
+plot
+```
+Lets animate the race between Serena Williams and Roger Federer over time
+```{r animated step chart, warning=FALSE, message=FALSE}
+library(gganimate)
+library(gifski)
+#The chart has to modified slightly to work as an animated GIF
+plot2 <- ggplot(sr,
+  aes(year, rolling_win_count, label = name, colour = name)) + 
+  geom_step(data = sr,
+  mapping = aes(x = year, y = rolling_win_count, group = name), size=2) +
+  geom_text_repel(
+  aes(label = name),
+  nudge_x = 1, nudge_y = 1,
+  na.rm = TRUE
+  ) + labs(
+  title = "Tennis grand slam wins",
+  subtitle = "Serena Williams has the most with 23 wins"
+  ) + style() 
+plot2
+anim <- plot2 + transition_reveal(year) 
+anim
+#Save the animated chart as a GIF
+anim_save("serena_roger_slams.gif")
+```
+
+
+## Results
+```{r save figures, warning=FALSE}
+ggsave("women_grand_slams.png", plot = women, width = 10, height = 8)
+ggsave("men_grand_slams.png", plot = men, width = 10, height = 8)
+ggsave("serena_roger.png", plot = plot, width = 12, height = 8)
+```
+
+Save the fixed data set with duplicates removed and the rolling_win_count variable fixed (use rolling_win_count2 for analysis/visualisation).
+```{r save fixed dataset, warning=FALSE}
+grand_slams_fix <-  grand_slams %>% group_by(name) %>% distinct(year, tournament_date, .keep_all = TRUE) %>% mutate(rolling_win_count2 = row_number()) %>%  mutate(total_wins = if_else(year != max(year), NA_integer_, max(rolling_win_count2))) %>%  mutate(label = if_else(year == max(year), as.character(name), NA_character_))
+
+
+#Output the tidy dataset for future use.
+write.csv(grand_slams_fix, file = "grand_slams_fix.csv")
+```
+
+## Discussion/conclusions
++ Step charts are fairly easy to generate using ggplot2 and geom_step
++ The bbc style gives the charts a nice clean look to them
++ ggrepel was fairly easy to use to label the lines
++ The most challenging part was working out how to put the point on the end of the line
++ It was relatively easy to animate the step chart showing the wins over time for Serena Williams and Roger Federer
+
+## Package citations
+
+  Hadley Wickham (2017). tidyverse: Easily Install and Load the
+  'Tidyverse'. R package version 1.2.1.
+  https://CRAN.R-project.org/package=tidyverse
+  
+  Kamil Slowikowski (2018). ggrepel: Automatically Position Non-Overlapping
+  Text Labels with 'ggplot2'. R package version 0.8.0.
+  https://CRAN.R-project.org/package=ggrepel
+  
+  Thomas Lin Pedersen and David Robinson (2019). gganimate: A Grammar of
+  Animated Graphics. R package version 1.0.3.
+  https://CRAN.R-project.org/package=gganimate
+
+
+```{r citation, echo=FALSE, eval=FALSE}
+citation("tidyverse")
+citation("ggrepel")
+citation("gganimate")
+```
+
+
