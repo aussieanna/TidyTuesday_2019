@@ -1,0 +1,73 @@
+---
+title: "Nobel prize winners"
+author: "Anna Reynolds"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: 
+  rmarkdown::html_document:
+    code_folding: show
+    theme: sandstone
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+This weeks #TidyTuesday data looks at Nobel prize winners over time.
+
+## Load data
+```{r load data, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
+library(here)
+library(knitr)
+library(ggthemes)
+nobel <- read_csv(here("nobel_winners.csv")) %>% clean_names()
+kable(head(nobel[,1:7]))
+```
+
+## Analysis/visualization
+This week I would like to recreate (roughly) the Economist plot which shows age by year faceted by prize category.
+```{r age calculation}
+#calculate age using birth_date and prize_year variables
+nobel$birth_year <- as.integer(substring(nobel$birth_date, 1,4))
+nobel$age <- nobel$prize_year - nobel$birth_year
+```
+
+## Results
+```{r plot, warning=FALSE, message=FALSE, fig.height=10, fig.width=12}
+colours <- c("red", "dark green", "yellow", "dark blue", "light blue", "brown")
+p <- ggplot(nobel, aes(x = prize_year, y = age, colour = category)) + geom_point(alpha = 0.6, size = 2) + facet_wrap(~ category) + theme_economist() + geom_smooth(se = FALSE, aes(colour = category), lw = 1.5) + theme ( legend.position = "none" )
+p + labs(x = "Prize Year", y = "Age of winners", title = "Senescience", subtitle = "Age of Nobel laureates, at date of award", caption = "Source: Nobelprize.org")
+```
+
+
+## Discussion/conclusions
+The age of Nobel laureates in the Medicine, Chemistry and Physics categories are getting older over time. Peace prize laureates are getting younger, perhaps driven by Malala Yousafzai who was 17 at the time she won.
+
+## Package citations
+
+  Hadley Wickham (2017). tidyverse: Easily Install and Load the
+  'Tidyverse'. R package version 1.2.1.
+  https://CRAN.R-project.org/package=tidyverse
+  
+
+  Yihui Xie (2018). knitr: A General-Purpose Package for Dynamic Report
+  Generation in R. R package version 1.20.
+  
+  Sam Firke (2018). janitor: Simple Tools for Examining and Cleaning
+  Dirty Data. R package version 1.1.1.
+  https://CRAN.R-project.org/package=janitor
+  
+  Jeffrey B. Arnold (2018). ggthemes: Extra Themes, Scales and Geoms for
+  'ggplot2'. R package version 4.0.1.
+  https://CRAN.R-project.org/package=ggthemes
+  
+
+```{r citation, echo=FALSE, eval=FALSE}
+citation("tidyverse")
+citation("knitr")
+citation("janitor")
+citation("ggthemes")
+```
+
