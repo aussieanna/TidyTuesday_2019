@@ -1,0 +1,120 @@
+---
+title: "Meteorites"
+author: "Anna Reynolds"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: 
+  rmarkdown::html_document:
+    code_folding: show
+    theme: sandstone
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+This week's #TidyTuesday dataset is all about meteorites, where they fell and when they fell! Data comes from the Meteoritical Society by way of NASA.
+
+## Load data
+```{r load data, warning=FALSE, message=FALSE}
+library(tidyverse)
+#meteorites <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-06-11/meteorites.csv")
+#Output the tidy dataset for future use.
+#write.csv(meteorites, file = "meteorites.csv")
+meteorites <- read_csv("meteorites.csv")
+```
+
+## Analysis/visualization
+Focus on those that fell on Australia.
+```{r map data}
+met_aus <- filter(meteorites, lat < -11 & lat > -47 & long > 110 & long < 160)
+library(leaflet)
+leaflet(data = met_aus) %>% addTiles() %>%
+  addMarkers(~long, ~lat, popup = ~as.character(name), label = ~as.character(mass))
+```
+
+```{r maps, warning=FALSE, message=FALSE}
+pal <- colorFactor(c("blue", "purple"), domain = c("Fell", "Found"))
+
+leaflet(met_aus) %>% addTiles() %>%
+  addCircleMarkers(
+    radius = ~ifelse(fall == "Found", 6, 10),
+    color = ~pal(fall),
+    stroke = FALSE, fillOpacity = 0.5, popup = ~paste(name, fall, mass)
+  ) %>%
+  addLegend(pal = pal, values = ~fall, opacity = 1)
+
+leaflet(met_aus) %>% addTiles() %>% addCircles(radius = ~mass/100, weight = 1, color = "#777777",
+        fillColor = ~pal(mass), fillOpacity = 0.7, popup = ~paste(mass))
+```
+
+Make a static map showing those that fell on Australia.
+
+```{r static map}
+library(rnaturalearth)
+library(rnaturalearthdata)
+library(sf)
+world <- ne_countries(scale = "medium", returnclass = "sf")
+sites <- st_as_sf(met_aus, coords = c("long", "lat"), 
+    crs = 4326, agr = "constant")
+ggplot(data = world) +
+    geom_sf(fill = "antiquewhite1") + 
+    geom_sf(data = sites) +
+    coord_sf(xlim = c(110, 160), ylim = c(-10, -45), expand = FALSE) + theme_bw() +
+    xlab("Longitude") + ylab("Latitude") +
+    ggtitle("Meterorite Sites", subtitle = "Australia") +
+    theme(panel.grid.major = element_line(color = gray(0.5), linetype = "dashed", 
+        size = 0.5), panel.background = element_rect(fill = "aliceblue"))
+```
+
+Add map of Australia including the States.
+
+```{r static maps states}
+oz_shape <- rnaturalearth::ne_states(geounit = "australia")
+# convert to simple features
+oz_shape_sf <- sf::st_as_sf(oz_shape)
+ggplot(oz_shape_sf) +
+    geom_sf(fill = "antiquewhite1") + 
+    geom_sf(data = sites) +
+    coord_sf(xlim = c(110, 160), ylim = c(-10, -45), expand = FALSE) + theme_bw() +
+    xlab("Longitude") + ylab("Latitude") +
+    ggtitle("Meterorite Sites", subtitle = "Australia") +
+    theme(panel.grid.major = element_line(color = gray(0.5), linetype = "dashed", 
+        size = 0.5), panel.background = element_rect(fill = "aliceblue"))
+
+```
+
+
+## Results
++ Most of the meteorites in Australia in the database are recorded as being found.
++ There is a cluster of meteorites recorded along the Great Australian Bight.
++ The largest meteorite recorded was in South-eastern corner of Western Australia.
+
+## Discussion/conclusions
+Leaflet is a good package to use to explore the data but zooming in/out is very sensitive with a trackpad. It also requires an internet connection.
+
+It would be good to make a static image of Australia, and perhaps animate it showing the change over time.
+
+## Package citations
+  Hadley Wickham (2017). tidyverse: Easily Install and Load the
+  'Tidyverse'. R package version 1.2.1.
+  https://CRAN.R-project.org/package=tidyverse
+  
+  Joe Cheng, Bhaskar Karambelkar and Yihui Xie (2018). leaflet:
+  Create Interactive Web Maps with the JavaScript 'Leaflet' Library.
+  R package version 2.0.1. https://CRAN.R-project.org/package=leaflet
+  
+  Andy South (2017). rnaturalearth: World Map Data from Natural
+  Earth. R package version 0.1.0.
+  https://CRAN.R-project.org/package=rnaturalearth
+  
+  Pebesma, E., 2018. Simple Features for R: Standardized Support for
+  Spatial Vector Data. The R Journal 10 (1), 439-446,
+  https://doi.org/10.32614/RJ-2018-009
+  
+```{r citation, echo=FALSE, eval=FALSE}
+citation("tidyverse")
+citation("leaflet")
+citation("rnaturalearth")
+citation("sf")
+```
