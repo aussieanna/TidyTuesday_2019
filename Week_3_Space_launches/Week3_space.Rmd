@@ -1,0 +1,108 @@
+---
+title: "Space launches"
+author: "Anna Reynolds"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: 
+  rmarkdown::html_document:
+    code_folding: show
+    theme: sandstone
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Overview
+This weeks #TidyTuesday data is on space launches over time. Principal data came from the Jonathan McDowell's JSR Launch Vehicle Database, available online at http://www.planet4589.org/space/lvdb/index.html.
+
+## Load data
+```{r libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(here)
+library(janitor)
+my_theme <- theme_bw() +
+  theme (
+    text = element_text (colour = "#FDFDFD", face = "bold"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    plot.background = element_rect(fill = "#262A33"),
+    panel.background = element_rect(fill = "#262A33"),
+    panel.border = element_rect(size = 0),
+    axis.text.x = element_text(colour = "#FDFDFD"),
+    axis.text.y = element_text(colour = "#FDFDFD"),
+    plot.title = element_text(colour = "#FDFDFD", size = 16)
+  )
+space <- read_csv(here("launches.csv")) %>% clean_names()
+knitr::kable(head(space[,1:7])) 
+```
+
+## Analysis/visualization
+How have space launches changed over time?
+```{r agency type, warning=FALSE, message=FALSE, fig.height=6, fig.wdith=8}
+library(ggridges)
+# set colors
+sc_pal <- scico::scico(10, palette = "lajolla")[c(1, 4, 6)]
+#Density plot
+ggplot(space, aes(x = launch_year, y = agency_type, fill = agency_type)) + geom_density_ridges(alpha = 0.7, color = "white") + guides(colour = T) +
+  scale_fill_manual(
+    values = sc_pal) +
+  theme_minimal() +
+  labs(x = "Date of launch",
+       y = "Agency type",
+       title = "Space launches, by agency type",
+       caption = "Source: Jonathan McDowell's JSR Launch Vehicle Database")  +
+  theme(legend.position = "none") + 
+  guides ( fill = FALSE) + my_theme 
+```
+```{r success, warning=FALSE, message=FALSE, fig.height=6, fig.wdith=8}
+# set colors
+sc_pal <- scico::scico(10, palette = "devon")[c(6, 10)]
+#Density plot
+p <- ggplot(space, aes(x = launch_year, y = category, fill = category)) + geom_density_ridges(alpha = 0.7, scale = 60, color = "white") + guides(colour = T) +
+  scale_fill_manual(
+    values = sc_pal) +
+  theme_minimal() +
+  labs(x = "Date of launch",
+       y = " ",
+       title = "Space launches",
+       caption = "Source: Jonathan McDowell's JSR Launch Vehicle Database")  +
+  theme(legend.position = "none") + 
+  guides ( fill = FALSE) + my_theme 
+
+p + annotate ( "text" , x = 1980 , y = 42 , label = "Success" , family = "san serif" , colour = "#FFFFFF" , size = 6) + annotate ( "text" , x = 1973 , y = 60 , label = "Failure" , family = "san serif" , colour = "#9497E5" , size = 6)
+```
+
+
+## Results
+
+
+## Discussion/conclusions
+
+## Package citations
+
+  Hadley Wickham (2017). tidyverse: Easily Install and Load the
+  'Tidyverse'. R package version 1.2.1.
+  https://CRAN.R-project.org/package=tidyverse
+  
+
+  Yihui Xie (2018). knitr: A General-Purpose Package for Dynamic Report
+  Generation in R. R package version 1.20.
+  
+  Sam Firke (2018). janitor: Simple Tools for Examining and Cleaning
+  Dirty Data. R package version 1.1.1.
+  https://CRAN.R-project.org/package=janitor
+  
+  Claus O. Wilke (2018). ggridges: Ridgeline Plots in 'ggplot2'. R
+  package version 0.5.0. https://CRAN.R-project.org/package=ggridges
+  
+  Thomas Lin Pedersen and Fabio Crameri (2018). scico: Colour Palettes Based
+  on the Scientific Colour-Maps. R package version 1.0.0.
+  https://CRAN.R-project.org/package=scico
+
+```{r citation, echo=FALSE, eval=FALSE}
+citation("tidyverse")
+citation("knitr")
+citation("janitor")
+citation("ggridges")
+citation("scico")
+```
