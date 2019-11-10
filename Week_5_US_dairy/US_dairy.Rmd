@@ -1,0 +1,95 @@
+---
+title: "US dairy consumption - Week 5 #TidyTuesday"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(tidyverse)
+library(highcharter)
+#Import data
+cheese <- read_csv("clean_cheese.csv")
+cheese_long <- cheese %>% select("Year", "Cheddar", "Mozzarella", "American Other", "Processed Cheese") %>% gather("Cheddar", "Mozzarella", "American Other", "Processed Cheese", key = "Type", value = "Consumption")
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Cheese
+
+```{r cheese line}
+hchart(cheese_long, "line", hcaes(x = Year, y = Consumption, group = Type),
+       color = c("#e5b13a", "#4bd5ee", "#4AA942", "#FAFAFA")) %>% 
+  hc_title(
+    text = "<span style=\"color:#e5b13a\"> Cheese </span> consumption (lbs/person), USA 1970 - 2017",
+    useHTML = TRUE) %>% 
+  hc_tooltip(table = TRUE, sort = TRUE) %>% 
+  hc_credits(
+    enabled = TRUE,
+    text = "Source: United States Department of Agriculture; #TidyTuesday",
+    href = "https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-29 ") %>% 
+  hc_add_theme(
+    hc_theme_flatdark(
+      chart = list(
+        backgroundColor = "dark grey"
+      )
+    )
+  )
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Milk 
+
+```{r milk}
+#Import data
+milk_prod <- read_csv("milk_products_facts.csv") %>% rename(Milk = fluid_milk, Yoghurt = fluid_yogurt, American.cheese = cheese_american)
+milk_long <- milk_prod %>% select("year", "Milk", "Yoghurt", "American.cheese", "butter") %>% gather("Milk", "Yoghurt", "American.cheese", "butter", key = "Product", value = "Consumption")
+milk <- filter(milk_long, Product == "Milk")
+
+hchart(milk, "line", hcaes(x = year, y = Consumption, group = Product),
+       color = c("#FFFFFF")) %>% 
+  hc_title(
+    text = "Milk consumption (lbs/person), USA 1975 - 2017",
+    useHTML = TRUE) %>% 
+  hc_tooltip(table = TRUE, sort = TRUE) %>% 
+  hc_credits(
+    enabled = TRUE,
+    text = "Source: United States Department of Agriculture; #TidyTuesday",
+    href = "https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-29") %>% 
+  hc_add_theme(
+    hc_theme_flatdark(
+      chart = list(
+        backgroundColor = "dark grey"
+      )
+    )
+  )
+```
+
+### Butter, yoghurt and American cheese
+
+```{r butter}
+butter <- milk_long %>% filter(Product != "Milk") %>% mutate(Consumption = round(Consumption, 2))
+hchart(butter, "line", hcaes(x = year, y = Consumption, group = Product),
+       color = c("#FFFACD", "#F08080", "#BFEFFF")) %>% 
+  hc_title(
+    text = "<span style=\"color:#F08080\"> Butter </span>, <span style=\"color:#BFEFFF\"> yoghurt </span> and <span style=\"color:#FFFACD\"> cheese  </span> consumption (lbs/person), USA 1975 - 2017",
+    useHTML = TRUE) %>% 
+  hc_tooltip(table = TRUE, sort = TRUE) %>% 
+  hc_credits(
+    enabled = TRUE,
+    text = "Source: United States Department of Agriculture; #TidyTuesday",
+    href = "https://github.com/rfordatascience/tidytuesday/tree/master/data/2019/2019-01-29") %>% 
+  hc_add_theme(
+    hc_theme_flatdark(
+      chart = list(
+        backgroundColor = "dark grey"
+      )
+    )
+  )
+```
+
