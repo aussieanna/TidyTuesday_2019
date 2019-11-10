@@ -1,0 +1,143 @@
+---
+title: "Womens World Cup"
+author: "Anna Reynolds"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: 
+  rmarkdown::html_document:
+    code_folding: show
+    theme: sandstone
+    code_download: true
+    toc: TRUE
+    toc_float: TRUE
+    toc_collapsed: TRUE
+    toc_depth: 3
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+extrafont::loadfonts(device="win")
+```
+
+## Overview
+This weeks #TidyTuesday data on the Womens World Cup comes from data.world and includes final score and win/loss status data from 1991-2019. Additionally the 2019 rosters for each team are included. 
+
+## Load data
+```{r load data, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(ggrepel)
+library(emojifont)
+#wwc_outcomes <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-07-09/wwc_outcomes.csv")
+#squads <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-07-09/squads.csv")
+#codes <- readr::read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2019/2019-07-09/codes.csv")
+#Output the tidy datasets for future use.
+#write.csv(wwc_outcomes, file = "wwc_outcome.csv")
+#write.csv(squads, file = "squads.csv")
+#write.csv(codes, file = "codes.csv")
+wwc_outcomes <- read_csv("wwc_outcome.csv")
+squads <- read_csv("squads.csv")
+codes <- read_csv("codes.csv")
+#Join coutnry names to outcomes
+outcomes <- dplyr::left_join(wwc_outcomes, codes, by = "team")
+```
+
+```{r theme}
+#Light theme
+my_theme_lt <- theme_bw() +
+  theme (
+    text = element_text (colour = "#262A33", face = "bold"),
+    panel.grid.major.x = element_blank(),
+    panel.grid.minor.x = element_blank(),
+    plot.background = element_rect(fill = "#FFF8DC"),
+    panel.background = element_rect(fill = "#FFF8DC"),
+    panel.border = element_rect(colour = NA, size = 0),
+    axis.text.x = element_text(colour = "#262A33", size = 12),
+    axis.text.y = element_text(colour = "#262A33", size = 12),
+    plot.title = element_text(colour = "#262A33", size = 24),
+    plot.subtitle = element_text(colour = "#262A33", size = 20)
+  )
+```
+
+
+## Analysis/visualization
+Which countries had the most number of wins and goals?
+```{r wins and goals}
+wins <-  outcomes %>% filter(win_status == "Won") %>% group_by(country) %>% count(win_status, sort = TRUE)
+goals <-  outcomes %>% filter(win_status == "Won") %>% group_by(country) %>% mutate(goals = sum(score))
+wins_goals <- inner_join(wins, goals, by = "country") %>% distinct(country, n, goals, .keep_all = TRUE)
+```
+
+```{r scatter plot}
+scatter <- ggplot(wins_goals, aes(goals, n)) +
+  geom_point() +
+  #geom_emoji('soccer', size=5) +
+  geom_text_repel(
+  aes(label = country),
+  data  = subset(wins_goals, goals > 30),
+  nudge_x = 3, nudge_y = 2,
+  na.rm = TRUE
+  ) + labs(
+  x = "Total number of goals",
+  y = "Number of wins",
+  title = "Womens World Cup results, 1991\u20132019",
+  subtitle = "The US team has the most wins and goals",
+  caption = "Source: data.world"
+  ) + my_theme_lt
+scatter
+```
+
+Is the US team the most experienced in 2019?
+```{r econodist chart, warning=FALSE, message=FALSE}
+library(ggeconodist)
+#Set up data
+caps <- squads %>% group_by(country) %>% mutate(median_caps = median(caps, na.rm = TRUE)) %>% mutate(tenth = quantile(caps, 0.1, na.rm = TRUE)) %>% mutate(ninetieth = quantile(caps, 0.9, na.rm = TRUE)) %>% distinct(country, median_caps, tenth, ninetieth, .keep_all = TRUE) %>% arrange(desc(median_caps))
+
+#Make graph - code from Bob Rudis https://cinc.rud.is/web/packages/ggeconodist/
+gg <- ggplot(caps, aes(x = fct_reorder(country,median_caps))) +
+  geom_econodist(
+    aes(ymin = tenth, median = median_caps, ymax = ninetieth),
+    stat = "identity", show.legend = TRUE
+  ) +
+  scale_y_continuous(expand = c(0,0), position = "right", limits = range(0, 200)) +
+  coord_flip() +
+  labs(
+    x = NULL, y = NULL,
+    title = "Womens World Cup teams, number of caps, 2019",
+    subtitle = "Is the US team the most experienced?",
+    caption = "Source: data.world"
+  ) +
+  theme_econodist()
+gg
+
+#Add legend
+gg_legend <- grid.newpage()
+left_align(gg, c("subtitle", "title", "caption")) %>% 
+  add_econodist_legend(econodist_legend_grob(), below = "subtitle") %>% 
+  grid.draw()
+```
+
+
+## Results
++ The US team had the most number of wins and goals, followed by Germany and Norway.
++ The US has the most experience in terms of number of caps for their players in 2019, followed by China, New Zealand and Australia.
+
+```{r save figures, warning=FALSE, echo=FALSE}
+ggsave("Wins_goals.png", plot = scatter, width = 10, height = 8)
+```
+
+## Discussion/conclusions
+
+## Package citations
+  Hadley Wickham (2017). tidyverse: Easily Install and Load the
+  'Tidyverse'. R package version 1.2.1.
+  https://CRAN.R-project.org/package=tidyverse
+  
+  Kamil Slowikowski (2018). ggrepel: Automatically Position
+  Non-Overlapping Text Labels with 'ggplot2'. R package version
+  0.8.0. https://CRAN.R-project.org/package=ggrepel
+  
+```{r citation, echo=FALSE, eval=FALSE}
+citation("tidyverse")
+citation("ggrepel")
+```
+
