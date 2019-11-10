@@ -1,0 +1,107 @@
+---
+title: "Squirrels in New York"
+author: "Anna Reynolds"
+date: "`r format(Sys.time(), '%Y-%m-%d')`"
+output: 
+  rmarkdown::html_document:
+    code_folding: show
+    theme: sandstone
+    code_download: true
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(printr)
+```
+
+## Overview
+This week's data is from the NYC Squirrel Census - raw data at [NY Data](# https://data.cityofnewyork.us/Environment/2018-Central-Park-Squirrel-Census-Squirrel-Data/vfnx-vebw).
+
+## Load data
+```{r import data, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(sf)
+library(ggsn) #Can be used to add scale bars and north arrow to maps
+#Import shapefile of Central Park
+cp <- sf::read_sf(dsn = here::here("CentralAndProspectParks", "CentralPark.shp"), layer = "CentralPark")
+pp <- sf::read_sf(dsn = here::here("CentralAndProspectParks", "ProspectPark.shp"), layer = "ProspectPark")
+
+squirrels <- read_csv("squirrels.csv")
+head(squirrels)
+```
+
+## Analysis/visualization
+
+```{r map}
+cols <- c("black", "brown", "grey55")
+squirrels %>% filter(!is.na(primary_fur_color)) %>% 
+  ggplot() +
+  geom_sf(data = cp, color = "grey70") +
+  geom_point(
+    aes(long, lat,
+        fill = primary_fur_color,
+        alpha = primary_fur_color),
+    shape = 21,
+    color = "grey20",
+    size = 1.5,
+    stroke = 0.2
+  ) +
+  scale_x_continuous(limits = c(-73.982,-73.9495)) +
+  scale_y_continuous(limits = c(40.7648, 40.8)) +
+  scale_fill_manual(values = c("black", "#d2691e", "grey60"),
+                    guide = F) +
+  scale_alpha_manual(values = c(0.6, 0.6, 0.4),
+                     guide = F) + theme_minimal() + facet_grid( ~ primary_fur_color) +
+  labs(x = NULL, y = NULL, title = "Squirrels in Central Park, NYC") + theme(axis.text = element_blank(),
+                       axis.title = element_blank(),
+                       axis.ticks = element_blank())
+```
+
+```{r hex density map, message=F, warning=FALSE}
+sq <- ggplot(squirrels, aes(long, lat)) + geom_hex() + coord_fixed() + 
+  theme_minimal() +
+  scale_fill_viridis_c(option = "C")
+sq
+#3D version
+library(rayshader)
+par(mfrow = c(1, 2))
+plot_gg(sq, width = 5, height = 4, scale = 300, raytrace = FALSE, preview = TRUE)
+plot_gg(sq, width = 5, height = 4, scale = 300, multicore = TRUE, windowsize = c(1000, 800))
+render_camera(fov = 70, zoom = 0.5, theta = 130, phi = 35)
+Sys.sleep(0.2)
+render_snapshot()
+
+```
+
+## Results
++ Squirrels are more often observed in the southern end of Central Park
++ Grey squirrels are the most common in Central Park
++ A hexagonal density map can be a useful way of visualising density patterns
+
+## Discussion/conclusions
+
+## Package citations
+  Hadley Wickham (2017). tidyverse: Easily Install and Load the
+  'Tidyverse'. R package version 1.2.1.
+  https://CRAN.R-project.org/package=tidyverse
+  
+  Yihui Xie (2019). knitr: A General-Purpose Package for Dynamic Report
+  Generation in R. R package version 1.25.
+  
+  Yihui Xie (2017). printr: Automatically Print R Objects to Appropriate
+  Formats According to the 'knitr' Output Format. R package version 0.1.
+  https://CRAN.R-project.org/package=printr
+  
+  Tyler Morgan-Wall (2019). rayshader: Create and Visualize Hillshaded Maps
+  from Elevation Matrices. R package version 0.11.5.
+  https://CRAN.R-project.org/package=rayshader
+```{r citation, echo=FALSE, eval=FALSE}
+citation("tidyverse")
+citation("knitr")
+citation("janitor")
+citation("printr")
+citation("rayshader")
+citation("ggsn")
+```
+
